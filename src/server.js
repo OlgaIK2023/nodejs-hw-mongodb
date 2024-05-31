@@ -1,7 +1,7 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 import { getAllcontacts, getContactById } from './services/contacts.js';
 
@@ -36,9 +36,6 @@ export const setupServer = () => {
   //   next();
   // });
 
-  
-
-
   app.get('/contacts', async (req, res) => {
     const contacts = await getAllcontacts();
 
@@ -50,36 +47,32 @@ export const setupServer = () => {
 
   app.get('/contacts/:contactId', async (req, res) => {
     const contactId = req.params.contactId;
-    try { 
-    const contact = await getContactById(contactId);
-    if (!contact) {
+    try {
+      const contact = await getContactById(contactId);
+      if (!contact) {
         return res.status(404).json({
-            message: `There is no contact with id ${contactId}`,
+          message: `There is no contact with id ${contactId}`,
         });
-        };
-        res.status(200).json({
+      }
+      res.status(200).json({
         message: `Successfully found contact with id ${contactId}`,
         data: contact,
-    });
-    } catch(error) {
-         return res.status(404).json({
-            message: `There is no contact with id ${contactId}`,
-        });
+      });
+    } catch (error) {
+      console.error('Error occurred while fetching contact:', error);
+      return res.status(404).json({
+        message: `There is no contact with id ${contactId}`,
+      });
     }
-});
-
-app.use('*', (req, res) => {
-  res.status(404).json({
-      message: 'Not found',
   });
-});
 
+  app.use('*', (req, res) => {
+    res.status(404).json({
+      message: 'Not found',
+    });
+  });
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-
-  
-
 };
-
