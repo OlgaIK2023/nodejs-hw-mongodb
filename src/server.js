@@ -3,7 +3,7 @@ import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from "dotenv";
 import { env } from './utils/env.js';
-import { getAllStudents, getStudentById } from './services/contact.js';
+import { getAllcontacts, getContactById } from './services/contacts.js';
 
 dotenv.config();
 
@@ -23,47 +23,63 @@ export const setupServer = () => {
     }),
   );
 
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello world!',
+  // app.get('/', (req, res) => {
+  //   res.json({
+  //     message: 'Hello world!',
+  //   });
+  // });
+
+  // app.use('*', (req, res, next) => {
+  //   res.status(404).json({
+  //     message: 'Not found',
+  //   });
+  //   next();
+  // });
+
+  
+
+
+  app.get('/contacts', async (req, res) => {
+    const contacts = await getAllcontacts();
+
+    res.status(200).json({
+      message: 'Successfully found contacts!',
+      data: contacts,
     });
   });
 
-  app.use('*', (req, res, next) => {
-    res.status(404).json({
+  app.get('/contacts/:contactId', async (req, res) => {
+    const contactId = req.params.contactId;
+    try { 
+    const contact = await getContactById(contactId);
+    if (!contact) {
+        return res.status(404).json({
+            message: `There is no contact with id ${contactId}`,
+        });
+        };
+        res.status(200).json({
+        message: `Successfully found contact with id ${contactId}`,
+        data: contact,
+    });
+    } catch(error) {
+         return res.status(404).json({
+            message: `There is no contact with id ${contactId}`,
+        });
+    }
+});
+
+app.use('*', (req, res) => {
+  res.status(404).json({
       message: 'Not found',
-    });
-    next();
   });
+});
 
-  app.use((err, req, res, next) => {
-    res.status(500).json({
-      message: 'Something went wrong',
-      error: err.message,
-    });
-    next();
-  });
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 
-  app.get('/students', async (req, res) => {
-    const students = await getAllStudents();
-
-    res.status(200).json({
-      data: students,
-    });
-  });
-
-  app.get('/students/:studentId', async (req, res) => {
-    const { studentId } = req.params;
-    const student = await getStudentById(studentId);
-
-    res.status(200).json({
-      data: student,
-    });
-  });
+  
 
 };
 
