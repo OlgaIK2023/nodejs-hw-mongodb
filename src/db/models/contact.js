@@ -50,4 +50,4 @@ const contactSchema = new Schema(
 );
 
 
-export const StudentsCollection = model('students', contactSchema);
+export const ContactsCollection = model('contacts', contactSchema);

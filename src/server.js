@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 import { getAllcontacts, getContactById } from './services/contacts.js';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -23,20 +24,7 @@ export const setupServer = () => {
     }),
   );
 
-  // app.get('/', (req, res) => {
-  //   res.json({
-  //     message: 'Hello world!',
-  //   });
-  // });
-
-  // app.use('*', (req, res, next) => {
-  //   res.status(404).json({
-  //     message: 'Not found',
-  //   });
-  //   next();
-  // });
-
-  app.get('/contacts', async (req, res) => {
+    app.get('/contacts', async (req, res) => {
     const contacts = await getAllcontacts();
 
     res.status(200).json({
@@ -49,7 +37,14 @@ export const setupServer = () => {
     const contactId = req.params.contactId;
     try {
       const contact = await getContactById(contactId);
-      if (!contact) {
+
+      if (!mongoose.Types.ObjectId.isValid(contactId)) {
+        return res.status(404).json({
+          message: `There is no contact with id ${contactId}`,
+       } );
+      }
+
+      else if (!contact) {
         return res.status(404).json({
           message: `There is no contact with id ${contactId}`,
         });
