@@ -1,5 +1,5 @@
 import { Router} from 'express';
-import { getAllcontacts, getContactById } from './services/contacts.js';
+import { getAllcontacts, getContactById } from '../services/contacts.js';
 import mongoose from 'mongoose';
 
 const contactsRouter = Router();
