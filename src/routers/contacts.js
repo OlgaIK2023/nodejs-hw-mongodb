@@ -2,9 +2,9 @@ import { Router} from 'express';
 import { getAllcontacts, getContactById } from './services/contacts.js';
 import mongoose from 'mongoose';
 
-const router = Router();
+const contactsRouter = Router();
 
-router.get('/contacts', async (req, res) => {
+contactsRouter.get('/contacts', async (req, res) => {
     const contacts = await getAllcontacts();
 
     res.status(200).json({
@@ -13,7 +13,7 @@ router.get('/contacts', async (req, res) => {
     });
   });
 
-  router.get('/contacts/:contactId', async (req, res) => {
+  contactsRouter.get('/contacts/:contactId', async (req, res) => {
     const contactId = req.params.contactId;
     try {
       const contact = await getContactById(contactId);
@@ -40,3 +40,5 @@ router.get('/contacts', async (req, res) => {
       });
     }
   });
+
+  export default contactsRouter;
