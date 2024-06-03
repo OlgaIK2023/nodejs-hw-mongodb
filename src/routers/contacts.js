@@ -7,6 +7,6 @@ const contactsRouter = Router();
 
 contactsRouter.get('/contacts', getAllcontactsController);
 
-  contactsRouter.get('/contacts/:contactId', getContactByIdController);
+contactsRouter.get('/contacts/:contactId', getContactByIdController);
 
-  export default contactsRouter;
+export default contactsRouter;
