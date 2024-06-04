@@ -46,13 +46,13 @@ export const getAllcontactsController = async (req, res) => {
         const contact = await upsertContactById(contactId, body);
       
         if (!contact) {
-          next(createHttpError(404, 'Student not found'));
+          next(createHttpError(404, 'Contact not found'));
           return;
         }
       
         res.status(200).json({
           staus: 200,
-          message: `uccessfully patched a contact!`,
+          message: `Successfully patched a contact!`,
           data: contact,
         });
       };
