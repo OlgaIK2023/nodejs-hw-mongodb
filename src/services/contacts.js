@@ -28,3 +28,7 @@ if (!contact) {
 
 return contact;
 };
+
+export const deleteContactById = async (contactId) => {
+ await ContactsCollection.findByIdAndDelete(contactId);
+};
