@@ -18,6 +18,7 @@ export const getAllcontactsController = async (req, res) => {
 
     if (!contact) {
         next(createHttpError(404, 'Contact not found'));
+        return;
       }
     
       res.status(200).json({
