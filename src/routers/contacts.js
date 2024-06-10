@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import { createContactSchema } from '../validationcontacts.js';
+import { createContactSchema, updateContactSchema } from '../validationcontacts.js';
 
 import {
   getAllcontactsController,
@@ -21,7 +21,7 @@ contactsRouter.get(
 );
 
 contactsRouter.patch(
-  '/contacts/:contactId',
+  '/contacts/:contactId', validateBody(updateContactSchema),
   ctrlWrapper(patchContactByIdController),
 );
 
