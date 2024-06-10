@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import { createContactSchema } from '../validationcontacts.js';
 
 import {
   getAllcontactsController,
@@ -23,7 +25,7 @@ contactsRouter.patch(
   ctrlWrapper(patchContactByIdController),
 );
 
-contactsRouter.post('/contacts', ctrlWrapper(createContactController));
+contactsRouter.post('/contacts', validateBody(createContactSchema), ctrlWrapper(createContactController));
 
 contactsRouter.delete(
   '/contacts/:contactId',
