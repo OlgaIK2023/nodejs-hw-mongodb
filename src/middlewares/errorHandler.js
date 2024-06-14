@@ -1,5 +1,5 @@
 import { HttpError } from 'http-errors';
-import { MongooseError } from 'mongoose';
+
 
 export const errorHandler = (error, req, res, next) => {
   
