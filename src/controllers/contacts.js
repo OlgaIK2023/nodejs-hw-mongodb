@@ -9,6 +9,8 @@ import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 
+import mongoose from 'mongoose';
+
 export const getAllcontactsController = async (req, res) => {
 
   const { page, perPage } = parsePaginationParams(req.query);
@@ -29,6 +31,11 @@ export const getAllcontactsController = async (req, res) => {
 
 export const getContactByIdController = async (req, res, next) => {
   const contactId = req.params.contactId;
+
+  if (!mongoose.Types.ObjectId.isValid(contactId)) {
+    next(createHttpError(404, 'Contact not found'));
+    return;
+};
 
   const contact = await getContactById(contactId);
 
