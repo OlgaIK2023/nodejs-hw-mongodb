@@ -12,4 +12,4 @@ router.post(
   ctrlWrapper(registerUserController),
 );
 
-export default authRouter;
+export default router;
