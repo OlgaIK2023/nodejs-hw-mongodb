@@ -8,6 +8,7 @@ import router from './routers/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
+import cookieParser from 'cookie-parser';
 
 
 dotenv.config();
@@ -37,6 +38,9 @@ export const setupServer = () => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
+
+  app.use(cookieParser());
+  
 };
 
 
