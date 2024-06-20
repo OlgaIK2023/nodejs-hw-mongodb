@@ -11,24 +11,28 @@ import {
   deleteContactController,
 } from '../controllers/contacts.js';
 
+import { authenticate } from '../middlewares/authenticate.js';
+
 const router= Router();
+
+router.use('/', authenticate);
 
 router.get('/', ctrlWrapper(getAllcontactsController));
 
 router.get(
-  '/contacts/:contactId',
+  '/:contactId',
   ctrlWrapper(getContactByIdController),
 );
 
 router.patch(
-  '/contacts/:contactId', validateBody(updateContactSchema),
+  '/:contactId', validateBody(updateContactSchema),
   ctrlWrapper(patchContactByIdController),
 );
 
-router.post('/contacts', validateBody(createContactSchema), ctrlWrapper(createContactController));
+router.post('/', validateBody(createContactSchema), ctrlWrapper(createContactController));
 
 router.delete(
-  '/contacts/:contactId',
+  '/:contactId',
   ctrlWrapper(deleteContactController),
 );
 
