@@ -42,3 +42,7 @@ export const registerUser = async (payload) => {
     });
   };
     
+
+  export const logoutUser = async (sessionId) => {
+    await SessionsCollection.deleteOne({ _id: sessionId });
+  };
