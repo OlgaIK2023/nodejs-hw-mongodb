@@ -8,7 +8,7 @@ import router from './routers/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
-import cookieParser from 'cookie-parser';
+import cookieParse from 'cookie-parser';
 
 
 dotenv.config();
@@ -20,6 +20,8 @@ export const setupServer = () => {
 
   app.use(express.json());
   app.use(cors());
+
+  app.use(cookieParse());
 
   app.use(
     pino({
@@ -39,7 +41,7 @@ export const setupServer = () => {
     console.log(`Server is running on port ${PORT}`);
   });
 
-  app.use(cookieParser());
+  
   
 };
 
