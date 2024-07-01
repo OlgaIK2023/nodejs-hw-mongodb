@@ -10,6 +10,7 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
 import cookieParse from 'cookie-parser';
 
+import { UPLOAD_DIR } from './constants/index.js';
 
 dotenv.config();
 
@@ -20,7 +21,7 @@ export const setupServer = () => {
 
   app.use(express.json());
   app.use(cors());
-
+  app.use('/uploads', express.static(UPLOAD_DIR));
   app.use(cookieParse());
 
   app.use(
