@@ -11,6 +11,11 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 
 import mongoose from 'mongoose';
 
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { env } from '../utils/env.js';
+
+
 export const getAllcontactsController = async (req, res) => {
 
   const { page, perPage } = parsePaginationParams(req.query);
@@ -53,9 +58,23 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactController = async (req, res) => {
+
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+
+  }
+  
   const contact = await createContact({
     ...req.body,
-    photo: req.file,
+    photo: photoUrl,
     userId: req.user._id,
   });
 
@@ -69,11 +88,22 @@ export const createContactController = async (req, res) => {
 export const patchContactByIdController = async (req, res, next) => {
   
   const { contactId } = req.params;
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
 
   const contact = await upsertContactById(contactId, {
     ...req.body,
     userId: req.user._id,
-    photo: req.file,
+    photo: photoUrl,
   });
 
   if (!contact) {
