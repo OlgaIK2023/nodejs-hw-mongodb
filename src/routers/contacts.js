@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { ctrlWrapper } from '../middlewares/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { createContactSchema, updateContactSchema } from '../validation/contacts.js';
+import { upload } from '../middlewares/multer.js';
 
 import {
   getAllcontactsController,
@@ -25,11 +26,11 @@ router.get(
 );
 
 router.patch(
-  '/:contactId', validateBody(updateContactSchema),
+  '/:contactId',  upload.single('photo'), validateBody(updateContactSchema),
   ctrlWrapper(patchContactByIdController),
 );
 
-router.post('/', validateBody(createContactSchema), ctrlWrapper(createContactController));
+router.post('/', upload.single('photo'), validateBody(createContactSchema), ctrlWrapper(createContactController));
 
 router.delete(
   '/:contactId',
