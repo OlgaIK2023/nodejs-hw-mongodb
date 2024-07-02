@@ -26,6 +26,7 @@ export const getAllcontactsController = async (req, res) => {
     perPage,
     sortBy,
     sortOrder,
+    userId: req.user._id,
   });
 
   res.status(200).json({
@@ -71,7 +72,7 @@ export const createContactController = async (req, res) => {
     }
 
   }
-  
+
   const contact = await createContact({
     ...req.body,
     photo: photoUrl,
