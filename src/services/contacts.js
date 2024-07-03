@@ -1,7 +1,8 @@
 import { ContactsCollection } from '../db/models/contact.js';
-import createHttpError from 'http-errors';
+
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/index.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getAllcontacts = async ({
   page = 1,
@@ -44,20 +45,20 @@ export const createContact = async (payload) => {
   return contact;
 };
 
-export const upsertContactById = async (contactId, payload, userId) => {
+export const upsertContactById = async (contactId, {photo, userId,...payload }) => {
+
+  let url;
+  if (photo) {
+    url = await saveFileToCloudinary(photo);
+  };
+
+
   const contact = await ContactsCollection.findOneAndUpdate(
     { _id: contactId, userId },
-    payload,
-    {
-      new: true,
-    },
-  );
+    { ...payload, photo: url },
+    { new: true });
 
-  if (!contact) {
-    throw createHttpError(404, 'Contact not found');
-  }
-
-  return contact;
+    return contact;
 };
 
 export const deleteContactById = async (contactId, userId) => {
