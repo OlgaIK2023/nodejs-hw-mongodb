@@ -133,7 +133,7 @@ export const deleteContactController = async (req, res, next) => {
 
     await deleteContactById(contactId, userId);
 
-    res.sendStatus(204);
+    res.status(204).send();
      
   } catch (error) {
     next(error);
