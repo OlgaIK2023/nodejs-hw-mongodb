@@ -128,18 +128,16 @@ export const patchContactByIdController = async (req, res, next) => {
 
 export const deleteContactController = async (req, res, next) => {
   const contactId = req.params.contactId;
-
-  if (!mongoose.Types.ObjectId.isValid(contactId)) {
-    next(createHttpError(404, 'Contact not found'));
-       return;
-   };
-
-  const contact = await deleteContactById(req.user._id, contactId);
-
-  if (!contact) {
-    next(createHttpError(404, 'Contact not found'));
-    return;
+     if (!mongoose.Types.ObjectId.isValid(contactId)) {
+     next(createHttpError(404, 'Contact not found'));
+        return;
+    };
+    const contact = await deleteContactById(req.user._id, contactId);
+    if (!contact) {
+        next(createHttpError(404, 'Contact not found'));
+        return;
   }
+
 
   res.sendStatus(204);
 };
