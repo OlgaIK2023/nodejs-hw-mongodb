@@ -36,7 +36,7 @@ export const getAllcontactsController = async (req, res) => {
   });
 };
 
-export const getContactsByIdController = async (req, res, next) => {
+export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
