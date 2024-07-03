@@ -1,5 +1,5 @@
 import { ContactsCollection } from '../db/models/contact.js';
-
+import createHttpError from 'http-errors';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/index.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
@@ -62,5 +62,13 @@ export const upsertContactById = async (contactId, {photo, userId,...payload }) 
 };
 
 export const deleteContactById = async (contactId, userId) => {
-  await ContactsCollection.findOneAndDelete({ _id: contactId, userId });
+  const contact = await ContactsCollection.findOne({ _id: contactId, userId });
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
+  await ContactsCollection.deleteOne({ _id: contactId });
+
+  return contact;
 };
