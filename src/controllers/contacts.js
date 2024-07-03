@@ -88,16 +88,17 @@ export const createContactController = async (req, res) => {
 export const patchContactByIdController = async (req, res, next) => {
   
   const { contactId } = req.params;
-  const photo = req.file;
 
-  let photoUrl;
-
-  
 
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
     next(createHttpError(404, 'Contact not found'));
     return;
 };
+
+  const photo = req.file;
+
+  let photoUrl;
+
 
   if (photo) {
     if (env('ENABLE_CLOUDINARY') === 'true') {
