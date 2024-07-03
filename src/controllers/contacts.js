@@ -133,7 +133,10 @@ export const deleteContactController = async (req, res, next) => {
 
     await deleteContactById(contactId, userId);
 
-    res.status(204).send();
+    res.status(204).json({
+      status: 204,
+      message: 'Contact deleted successfully',
+    });
      
   } catch (error) {
     next(error);
