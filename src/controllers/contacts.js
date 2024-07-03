@@ -92,6 +92,13 @@ export const patchContactByIdController = async (req, res, next) => {
 
   let photoUrl;
 
+  
+
+  if (!mongoose.Types.ObjectId.isValid(contactId)) {
+    next(createHttpError(404, 'Contact not found'));
+    return;
+  }
+
   if (photo) {
     if (env('ENABLE_CLOUDINARY') === 'true') {
       photoUrl = await saveFileToCloudinary(photo);
@@ -99,13 +106,7 @@ export const patchContactByIdController = async (req, res, next) => {
       photoUrl = await saveFileToUploadDir(photo);
     }
   }
-
-  if (!mongoose.Types.ObjectId.isValid(contactId)) {
-    next(createHttpError(404, 'Contact not found'));
-    return;
-  }
-
-
+  
   const contact = await upsertContactById(contactId, {
     ...req.body,
     userId: req.user._id,
