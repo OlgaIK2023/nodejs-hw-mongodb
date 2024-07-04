@@ -94,36 +94,17 @@ export const patchContactByIdController = async (req, res, next) => {
     next(createHttpError(404, 'Contact not found'));
     return;
 };
-
-  const photo = req.file;
-
-  let photoUrl;
-
-
-  if (photo) {
-    if (env('ENABLE_CLOUDINARY') === 'true') {
-      photoUrl = await saveFileToCloudinary(photo);
-    } else {
-      photoUrl = await saveFileToUploadDir(photo);
-    }
-  }
-
-  const contact = await upsertContactById(contactId, {
-    ...req.body,
-    userId: req.user._id,
-    photo: photoUrl,
-  });
-
-  if (!contact) {
+const contact = await upsertContactById(contactId, { ...req.body, userId: req.user._id, photo: req.file });
+if (!contact) {
     next(createHttpError(404, 'Contact not found'));
     return;
-  }
+}
 
-  res.status(200).json({
+res.status(200).json({
     status: 200,
-    message: `Successfully patched a contact!`,
+    message: 'Successfully patched a contact!',
     data: contact,
-  });
+});
 };
 
 export const deleteContactController = async (req, res, next) => {
