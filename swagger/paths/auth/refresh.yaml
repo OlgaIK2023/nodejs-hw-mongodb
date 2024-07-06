@@ -42,4 +42,4 @@ responses:
                   description: 'The new access token'
                   example: 'tkntaXI2mXcEBe8tMjBYsvrJZeTUse7J+SJSNS2z'
   '401':
-    $ref: '../../components/responses/401.yaml
+    $ref: '../../components/responses/401.yaml'
