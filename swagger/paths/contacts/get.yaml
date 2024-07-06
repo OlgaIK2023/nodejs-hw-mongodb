@@ -1,4 +1,4 @@
-ags:
+tags:
   - Contacts
 summary: Get list of contacts
 operationId: getContacts
