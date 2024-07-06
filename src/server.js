@@ -11,6 +11,7 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import cookieParse from 'cookie-parser';
 
 import { UPLOAD_DIR } from './constants/index.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
   const app = express();
+
+  app.use('/api-docs', swaggerDocs());
 
   app.use(express.json());
   app.use(cors());
